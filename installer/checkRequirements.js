@@ -2,7 +2,7 @@ const shell = require("shelljs")
 const { getAllInstalledSoftwareSync } = require("fetch-installed-software")
 const compareVersions = require("compare-versions")
 const path = require("path")
-const trycatchFn = require("../helpers/trycatchFn")
+const trycatchFn = require("./helpers/trycatchFn")
 
 
 

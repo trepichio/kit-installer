@@ -2,6 +2,7 @@ const shell = require("shelljs")
 const { getAllInstalledSoftwareSync } = require("fetch-installed-software")
 const compareVersions = require("compare-versions")
 const path = require("path")
+const fs = require("fs")
 const trycatchFn = require("./helpers/trycatchFn")
 
 
@@ -11,8 +12,12 @@ module.exports = async () => {
   /**
    * * resolves path to root directory of Installer scripts inside project
    */
-  const rootInstaller = path.resolve(".")
+  // const rootInstaller = path.resolve(".")
+  const rootInstaller = path.resolve(__dirname)
   console.log("TCL: rootInstaller", rootInstaller)
+  // console.log("TCL: read", fs.readFileSync(path.join(rootInstaller, 'assets', '7z1900.exe')))
+
+
 
   /**
    * * SOURCE list of required programs to install before  deploying Kit such as 7-zip (for compress and extraction) and Firebird (SGDB)
@@ -51,13 +56,30 @@ module.exports = async () => {
    */
     shell.echo("ORIGINAL PATH:" + shell.env.PATH)
 
+    const assetsFolder = path.join(rootInstaller, 'assets')
+    console.log("TCL: assetsFolder", assetsFolder)
+    const regexFileEXE = /^.+.exe\b/g
+    console.log("TCL: regexFileEXE", regexFileEXE)
+
     /**
      * * executes Shell commands for each required software for its installation on system and sets their env path
      */
     for (const install of mustInstall) {
-      //* navigate to folder of installers */
-      shell.cd(path.resolve("C:\\MBD\\Install"))
+      let [requiredFile] = install.command.match(regexFileEXE)
+      console.log("TCL: requiredFile", requiredFile)
 
+      let requiredFilePath = path.join(assetsFolder, requiredFile)
+      console.log("TCL: requiredFilePath", requiredFilePath)
+
+
+      const fileBuffer = fs.readFileSync(requiredFilePath)
+      const requiredFileAtFS = path.join(process.cwd(), requiredFile)
+      fs.writeFileSync(requiredFileAtFS, fileBuffer)
+
+      //* navigate to folder of installers */
+      // shell.cd(path.resolve("C:\\MBD\\Install"))
+
+      shell.cd(process.cwd())
 
       console.log(`Initiating ${install.DisplayName} installation...`);
 
@@ -74,7 +96,7 @@ module.exports = async () => {
         /**
          * * navigates to root directory of Installer scripts inside project
          */
-        shell.cd(rootInstaller)
+        shell.cd(process.cwd())
 
         //** set up NODE enviroment PATH for application to run on scripts */
         setPath(install.InstallLocation)

@@ -40,7 +40,7 @@ module.exports = async () => {
 
     // ** if cannot create the folder, something is wrong and should be fixed by user before trying again.
     if (mbdDirSh.code !== 0) {
-      console.log("TCL: main -> mbdDirSh", mbdDirSh.stderr)
+      console.log("TCL: extractKit -> mbdDirSh.error", mbdDirSh.stderr)
       console.log(`Cannot create ${rootDir} folder.`);
       console.log(`Not possible to extract KIT without being able to access or create ${rootDir}. Fix that and try again!`);
       process.exit(1)
@@ -48,7 +48,7 @@ module.exports = async () => {
     }
     else {
       //** successful folder creation. It can extract files now. */
-      console.log("TCL: main -> mbdDirSh", mbdDirSh.stdout)
+      console.log("TCL: extractKit -> mbdDirSh.output", mbdDirSh.stdout)
       console.log(`${rootDir} folder created.`)
       console.log("Let's extract files!");
       extractZip(zipFile, rootDir)

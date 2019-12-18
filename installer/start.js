@@ -3,11 +3,13 @@
 // const extractAndDeployDLLs = require("./extractAndDeployDLLs")
 const shell = require('shelljs')
 const checkRequirements = require('./checkRequirements.js')
+const setFirebirdPassword = require('./setFirebirdPassword.js')
 const extractKit = require('./extractKit.js')
 
 const main = () => {
 
   extractKit()
+  setFirebirdPassword()
 }
 
 (async () => {

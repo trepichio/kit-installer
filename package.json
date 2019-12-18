@@ -24,6 +24,7 @@
   "homepage": "https://github.com/trepichio/kit-builder-app#readme",
   "dependencies": {
     "adm-zip": "^0.4.13",
+    "arch": "^2.1.1",
     "compare-versions": "^3.5.1",
     "config": "^3.2.4",
     "fetch-installed-software": "0.0.6",

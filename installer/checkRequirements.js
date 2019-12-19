@@ -12,10 +12,8 @@ module.exports = async () => {
   /**
    * * resolves path to root directory of Installer scripts inside project
    */
-  // const rootInstaller = path.resolve(".")
   const rootInstaller = path.resolve(__dirname)
   console.log("TCL: rootInstaller", rootInstaller)
-  // console.log("TCL: read", fs.readFileSync(path.join(rootInstaller, 'assets', '7z1900.exe')))
 
 
 
@@ -76,9 +74,7 @@ module.exports = async () => {
       const requiredFileAtFS = path.join(process.cwd(), requiredFile)
       fs.writeFileSync(requiredFileAtFS, fileBuffer)
 
-      //* navigate to folder of installers */
-      // shell.cd(path.resolve("C:\\MBD\\Install"))
-
+      //* navigate to current folder at runtime */
       shell.cd(process.cwd())
 
       console.log(`Initiating ${install.DisplayName} installation...`);
@@ -102,9 +98,17 @@ module.exports = async () => {
         setPath(install.InstallLocation)
         shell.exec(`powershell -Command "exit;"`)
 
+        console.log(`${install.DisplayName} was installed successfully!`);
+
+
+        // remove original/source extracted file
+        shell.rm("-Rf", requiredFileAtFS)
+        console.log(`Removed file ${requiredFileAtFS}`)
       }
 
     }
+
+    console.log("All required softwares were installed successfully!");
   }
 
   /**

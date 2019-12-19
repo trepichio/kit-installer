@@ -6,12 +6,15 @@ const checkRequirements = require('./checkRequirements.js')
 const setFirebirdPassword = require('./setFirebirdPassword.js')
 const extractKit = require('./extractKit.js')
 const extractAndDeployDLLs = require('./extractAndDeployDLLs.js')
+const deployDesktopShortcuts = require('./deployDesktopShortcuts.js')
+const trycatchFn = require('./helpers/trycatchFn.js')
 
-const main = () => {
+const main = async () => {
 
-  extractKit()
-  setFirebirdPassword()
-  extractAndDeployDLLs()
+  await trycatchFn(extractKit)
+  await trycatchFn(setFirebirdPassword)
+  await trycatchFn(extractAndDeployDLLs)
+  await trycatchFn(deployDesktopShortcuts)
 }
 
 (async () => {

@@ -11,9 +11,9 @@ const trycatchFn = require('./helpers/trycatchFn.js')
 
 const main = async () => {
 
-  await trycatchFn(extractKit)
-  await trycatchFn(setFirebirdPassword)
-  await trycatchFn(extractAndDeployDLLs)
+  // await trycatchFn(extractKit)
+  // await trycatchFn(setFirebirdPassword)
+  // await trycatchFn(extractAndDeployDLLs)
   await trycatchFn(deployDesktopShortcuts)
 }
 

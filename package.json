@@ -1,7 +1,7 @@
 {
-  "name": "builder",
+  "name": "installer",
   "version": "1.0.0",
-  "description": "builder for MBD Kits",
+  "description": "installer for MBD Kits",
   "bin": "installer/start.js",
   "pkg": {
     "assets": "installer/assets/**/*",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trepichio/kit-builder-app.git"
+    "url": "git+https://github.com/trepichio/kit-installer.git"
   },
   "author": "João Trepichio",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/trepichio/kit-builder-app/issues"
+    "url": "https://github.com/trepichio/kit-installer/issues"
   },
-  "homepage": "https://github.com/trepichio/kit-builder-app#readme",
+  "homepage": "https://github.com/trepichio/kit-installer#readme",
   "dependencies": {
     "adm-zip": "^0.4.13",
     "arch": "^2.1.1",

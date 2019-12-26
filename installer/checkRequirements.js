@@ -2,8 +2,9 @@ const shell = require("shelljs")
 const { getAllInstalledSoftwareSync } = require("fetch-installed-software")
 const compareVersions = require("compare-versions")
 const path = require("path")
-const trycatchFn = require("../helpers/trycatchFn")
-
+const fs = require("fs")
+const trycatchFn = require("./helpers/trycatchFn")
+const logger = require('./logger')
 
 
 module.exports = async () => {
@@ -11,8 +12,10 @@ module.exports = async () => {
   /**
    * * resolves path to root directory of Installer scripts inside project
    */
-  const rootInstaller = path.resolve(".")
-  console.log("TCL: rootInstaller", rootInstaller)
+  const rootInstaller = path.resolve(__dirname)
+  logger.info(`checkRequirements: rootInstaller ${rootInstaller}`)
+
+
 
   /**
    * * SOURCE list of required programs to install before  deploying Kit such as 7-zip (for compress and extraction) and Firebird (SGDB)
@@ -38,11 +41,11 @@ module.exports = async () => {
   /**
    * * a list of required softwares retrieved from user system that lacks installation
    */
-  const mustInstall = getNeededToInstall(requiredPrograms)
-  console.log("TCL: mustInstall", mustInstall)
+  const mustInstall = await getNeededToInstall(requiredPrograms)
+  logger.info(`checkRequirements: mustInstall ${JSON.stringify([...mustInstall])}`)
 
   if (mustInstall.length === 0) {
-    console.log("Nothing to install.");
+    logger.info("Nothing to install.");
   }
   else {
 
@@ -51,15 +54,30 @@ module.exports = async () => {
    */
     shell.echo("ORIGINAL PATH:" + shell.env.PATH)
 
+    const assetsFolder = path.join(rootInstaller, 'assets')
+    logger.info(`checkRequirements: assetsFolder ${assetsFolder}`)
+    const regexFileEXE = /^.+.exe\b/g
+    logger.info(`checkRequirements: regexFileEXE ${regexFileEXE}`)
+
     /**
      * * executes Shell commands for each required software for its installation on system and sets their env path
      */
     for (const install of mustInstall) {
-      //* navigate to folder of installers */
-      shell.cd(path.resolve("C:\\MBD\\Install"))
+      let [requiredFile] = install.command.match(regexFileEXE)
+      logger.info(`checkRequirements: requiredFile ${requiredFile}`)
+
+      let requiredFilePath = path.join(assetsFolder, requiredFile)
+      logger.info(`checkRequirements: requiredFilePath ${requiredFilePath}`)
 
 
-      console.log(`Initiating ${install.DisplayName} installation...`);
+      const fileBuffer = fs.readFileSync(requiredFilePath)
+      const requiredFileAtFS = path.join(process.cwd(), requiredFile)
+      fs.writeFileSync(requiredFileAtFS, fileBuffer)
+
+      //* navigate to current folder at runtime */
+      shell.cd(process.cwd())
+
+      logger.info(`Initiating ${install.DisplayName} installation...`);
 
       //* executes installer command */
       const execInstall = await trycatchFn(shell.exec, install.command)
@@ -74,22 +92,30 @@ module.exports = async () => {
         /**
          * * navigates to root directory of Installer scripts inside project
          */
-        shell.cd(rootInstaller)
+        shell.cd(process.cwd())
 
         //** set up NODE enviroment PATH for application to run on scripts */
         setPath(install.InstallLocation)
         shell.exec(`powershell -Command "exit;"`)
 
+        logger.info(`${install.DisplayName} was installed successfully!`);
+
+
+        // remove original/source extracted file
+        shell.rm("-Rf", requiredFileAtFS)
+        logger.info(`Removed file ${requiredFileAtFS}`)
       }
 
     }
+
+    logger.info("All required softwares were installed successfully!");
   }
 
   /**
    * * This function gets list of required software that lacks its installation for the Kit
    * @param {Array} requiredPrograms
    */
-  function getNeededToInstall(requiredPrograms) {
+  async function getNeededToInstall(requiredPrograms) {
 
     /**
      * * a list of installed software from the Running System
@@ -124,7 +150,7 @@ module.exports = async () => {
     if (!shell.env.PATH.includes(program)) {
       shell.echo(`added ${program} to ENV PATH`)
       shell.exec(`powershell -NoExit -Command "setx /M PATH '${shell.env.PATH};${program}';exit;"`)
-      console.log("shell path modified: ", shell.env.PATH = `${shell.env.PATH};${program}`)
+      logger.log("info", "shell path modified: %s", shell.env.PATH = `${shell.env.PATH};${program}`)
 
     }
     else {

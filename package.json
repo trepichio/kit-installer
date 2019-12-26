@@ -28,15 +28,9 @@
     "compare-versions": "^3.5.1",
     "config": "^3.2.4",
     "fetch-installed-software": "0.0.6",
-    "node-fetch": "^2.6.0",
-    "node-firebird": "^0.8.9",
     "shelljs": "^0.8.3",
     "windows-shortcuts": "^0.1.6",
     "winston": "^3.2.1"
   },
-  "devDependencies": {
-    "directory-tree": "^2.2.4",
-    "folder-structure-generator": "^1.0.5",
-    "template-strings": "0.0.6"
-  }
+  "devDependencies": {}
 }

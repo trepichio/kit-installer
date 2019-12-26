@@ -4,7 +4,7 @@ const compareVersions = require("compare-versions")
 const path = require("path")
 const fs = require("fs")
 const trycatchFn = require("./helpers/trycatchFn")
-
+const logger = require('./logger')
 
 
 module.exports = async () => {
@@ -13,7 +13,7 @@ module.exports = async () => {
    * * resolves path to root directory of Installer scripts inside project
    */
   const rootInstaller = path.resolve(__dirname)
-  console.log("TCL: rootInstaller", rootInstaller)
+  logger.info(`checkRequirements: rootInstaller ${rootInstaller}`)
 
 
 
@@ -41,11 +41,11 @@ module.exports = async () => {
   /**
    * * a list of required softwares retrieved from user system that lacks installation
    */
-  const mustInstall = getNeededToInstall(requiredPrograms)
-  console.log("TCL: mustInstall", mustInstall)
+  const mustInstall = await getNeededToInstall(requiredPrograms)
+  logger.info(`checkRequirements: mustInstall ${JSON.stringify([...mustInstall])}`)
 
   if (mustInstall.length === 0) {
-    console.log("Nothing to install.");
+    logger.info("Nothing to install.");
   }
   else {
 
@@ -55,19 +55,19 @@ module.exports = async () => {
     shell.echo("ORIGINAL PATH:" + shell.env.PATH)
 
     const assetsFolder = path.join(rootInstaller, 'assets')
-    console.log("TCL: assetsFolder", assetsFolder)
+    logger.info(`checkRequirements: assetsFolder ${assetsFolder}`)
     const regexFileEXE = /^.+.exe\b/g
-    console.log("TCL: regexFileEXE", regexFileEXE)
+    logger.info(`checkRequirements: regexFileEXE ${regexFileEXE}`)
 
     /**
      * * executes Shell commands for each required software for its installation on system and sets their env path
      */
     for (const install of mustInstall) {
       let [requiredFile] = install.command.match(regexFileEXE)
-      console.log("TCL: requiredFile", requiredFile)
+      logger.info(`checkRequirements: requiredFile ${requiredFile}`)
 
       let requiredFilePath = path.join(assetsFolder, requiredFile)
-      console.log("TCL: requiredFilePath", requiredFilePath)
+      logger.info(`checkRequirements: requiredFilePath ${requiredFilePath}`)
 
 
       const fileBuffer = fs.readFileSync(requiredFilePath)
@@ -77,7 +77,7 @@ module.exports = async () => {
       //* navigate to current folder at runtime */
       shell.cd(process.cwd())
 
-      console.log(`Initiating ${install.DisplayName} installation...`);
+      logger.info(`Initiating ${install.DisplayName} installation...`);
 
       //* executes installer command */
       const execInstall = await trycatchFn(shell.exec, install.command)
@@ -98,24 +98,24 @@ module.exports = async () => {
         setPath(install.InstallLocation)
         shell.exec(`powershell -Command "exit;"`)
 
-        console.log(`${install.DisplayName} was installed successfully!`);
+        logger.info(`${install.DisplayName} was installed successfully!`);
 
 
         // remove original/source extracted file
         shell.rm("-Rf", requiredFileAtFS)
-        console.log(`Removed file ${requiredFileAtFS}`)
+        logger.info(`Removed file ${requiredFileAtFS}`)
       }
 
     }
 
-    console.log("All required softwares were installed successfully!");
+    logger.info("All required softwares were installed successfully!");
   }
 
   /**
    * * This function gets list of required software that lacks its installation for the Kit
    * @param {Array} requiredPrograms
    */
-  function getNeededToInstall(requiredPrograms) {
+  async function getNeededToInstall(requiredPrograms) {
 
     /**
      * * a list of installed software from the Running System
@@ -150,7 +150,7 @@ module.exports = async () => {
     if (!shell.env.PATH.includes(program)) {
       shell.echo(`added ${program} to ENV PATH`)
       shell.exec(`powershell -NoExit -Command "setx /M PATH '${shell.env.PATH};${program}';exit;"`)
-      console.log("shell path modified: ", shell.env.PATH = `${shell.env.PATH};${program}`)
+      logger.log("info", "shell path modified: %s", shell.env.PATH = `${shell.env.PATH};${program}`)
 
     }
     else {

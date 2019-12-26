@@ -1,4 +1,4 @@
-const ws = require("windows-shortcuts")
+const ws = require("./assets/windows-shortcuts/lib/windows-shortcuts")
 const path = require("path")
 const fs = require("fs")
 const logger = require('./logger');

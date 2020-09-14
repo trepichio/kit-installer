@@ -5,14 +5,16 @@ const AdmZip = require('adm-zip');
 const logger = require('./logger');
 
 
-module.exports = async () => {
+module.exports = async (data) => {
+  const { driverLetter, rootDir } = data
   //* where to get compressed file with DLLs from
-  const rootDir = "C:\\MBD\\Install\\"
+  // const rootDir = "C:\\MBD\\Install\\"
+  const installDir = path.join(driverLetter, rootDir, "Install")
   //* path to compressed file
-  const zipFile = path.join(rootDir, "Dll's (_CAT_ & _Instal_).zip")
+  const zipFile = path.join(installDir, "Dll's (_CAT_ & _Instal_).zip")
   logger.info(`extractAndDeployDLLs: rar ${zipFile}`)
   //* path destination where compressed files should be extracted
-  const zipDest = path.resolve(`${rootDir}`)
+  const zipDest = path.resolve(`${installDir}`)
 
 
   // reading archives
@@ -30,7 +32,7 @@ module.exports = async () => {
     logger.info("DLL Files extracted successfully.")
 
     //* copy DLLs from original/source folder to Windows folder according to PC Architecture (x86 or x64)
-    const src = path.join(rootDir, dllExtractedFolder.entryName)
+    const src = path.join(installDir, dllExtractedFolder.entryName)
     const sysPath = { x86: ['System32'], x64: ['System32', 'SysWOW64'] }
     const paths = sysPath[arch()]
 

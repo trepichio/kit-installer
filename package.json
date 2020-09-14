@@ -2,7 +2,7 @@
   "name": "installer",
   "version": "1.0.0",
   "description": "installer for MBD Kits",
-  "bin": "installer/start.js",
+  "bin": "installer/prompt.js",
   "pkg": {
     "assets": "installer/assets/**/*",
     "targets": [

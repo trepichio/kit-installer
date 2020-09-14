@@ -25,19 +25,19 @@ const logger = createLogger({
     // - Write all logs error (and below) to `error.log`.
     //
     new transports.Console(),
-    new transports.File({ filename: path.join(process.cwd(), 'error.log'), level: 'error' }),
-    new transports.File({ filename: path.join(process.cwd(), 'combined.log') })
+    new transports.File({ filename: path.join(process.cwd(), 'logs', 'error.log'), level: 'error' }),
+    new transports.File({ filename: path.join(process.cwd(), 'logs', 'combined.log') })
   ],
   // Enable exception handling when you create your logger.
   exceptionHandlers: [
-    new transports.File({ filename: path.join(process.cwd(), 'exceptions.log') })
+    new transports.File({ filename: path.join(process.cwd(), 'logs', 'exceptions.log') })
   ],
   exitOnError: false
 });
 
 // Call exceptions.handle with a transport to handle exceptions
 logger.exceptions.handle(
-  new transports.File({ filename: path.join(process.cwd(), 'exceptions.log') })
+  new transports.File({ filename: path.join(process.cwd(), 'logs', 'exceptions.log') })
 );
 
 module.exports = logger;

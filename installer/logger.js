@@ -3,6 +3,7 @@ const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, label, printf } = format;
 const path = require('path')
 
+const tsFormat = () => (new Date()).toLocaleString('pt-br', { timeZone: 'America/Sao_Paulo', hour12: false });
 
 const myFormat = printf(({ level, message, label, timestamp }) => {
   return `${timestamp} [${label}] ${level}: ${message}`;
@@ -12,7 +13,7 @@ const logger = createLogger({
   level: 'info',
   format: combine(
     label({ label: 'DEBUG' }),
-    timestamp(),
+    timestamp({ format: tsFormat }),
     format.splat(),
     format.simple(),
     myFormat

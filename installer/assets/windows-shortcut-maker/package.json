@@ -1,0 +1,58 @@
+{
+  "_from": "windows-shortcut-maker",
+  "_id": "windows-shortcut-maker@0.0.6",
+  "_inBundle": false,
+  "_integrity": "sha512-O9aDF8C1dR3niVx7WBezUEbYfN3ZYTsTb5oXic1VVUDkT3arV5gDh9Kv5KixvW7bXX2+oD6HB9lg8/NMrHZI9A==",
+  "_location": "/windows-shortcut-maker",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "windows-shortcut-maker",
+    "name": "windows-shortcut-maker",
+    "escapedName": "windows-shortcut-maker",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/windows-shortcut-maker/-/windows-shortcut-maker-0.0.6.tgz",
+  "_shasum": "d20651c4e064e5cbb66c310d1d7e16c0a603b837",
+  "_spec": "windows-shortcut-maker",
+  "_where": "C:\\MBD-projects\\MBD-Kit-Builder-project\\kit-installer\\installer",
+  "author": {
+    "name": "Pedro Costa",
+    "email": "pedrohenriqueteodorodacosta@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/phtdacosta/windows-shortcut-maker/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Make Windows shortcuts easily using this native module with no external dependencies.",
+  "homepage": "https://github.com/phtdacosta/windows-shortcut-maker#readme",
+  "keywords": [
+    "windows",
+    "shortcut",
+    "native",
+    "lightweight",
+    "desktop",
+    "lnk",
+    "url"
+  ],
+  "license": "GPL-3.0",
+  "main": "index.js",
+  "name": "windows-shortcut-maker",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phtdacosta/windows-shortcut-maker.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.6"
+}

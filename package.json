@@ -35,5 +35,14 @@
     "windows-shortcut-maker": "0.0.6",
     "winston": "^3.2.1"
   },
-  "devDependencies": {}
+  "contributors": [
+    {
+      "name": "João Trepichio",
+      "img": "https://avatars2.githubusercontent.com/u/11396817?s=460&u=085712d4f1296e6ad0a220ae7c0ea5278a9c40ed&v=4",
+      "url": "https://trepichio.github.io"
+    }
+  ],
+  "devDependencies": {
+    "@appnest/readme": "^1.2.7"
+  }
 }

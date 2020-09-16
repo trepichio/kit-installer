@@ -1,0 +1,14 @@
+{
+  "ids": {
+    "github": "trepichio/kit-installer"
+  },
+  "badges": [
+    {
+      "alt": "Not maintained",
+      "url": "#",
+      "img": "https://img.shields.io/badge/maintained%3F-No-red"
+    }
+  ],
+  "line": "cloudy",
+  "text": "Gerador de instalações customizadas para clientes (a.k.a. Kits). Desenvolvido por minha iniciativa própria para uso interno da empresa, afim de agilizar o processo e a qualidade do pós-atendimento do suporte automatizando e padronizando as implementações. Apesar de funcional, não está com sua arquitetura completa planejada, e seu desenvolvimento foi descontinuado."
+}
